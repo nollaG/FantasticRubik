@@ -7,6 +7,7 @@
 #include "Matrix.h"
 #include "Rotation.h"
 #include "Vector.h"
+#include "GLColor.h"
 #include "Operate.h"
 
 extern GLColor ColorBlack;
@@ -24,6 +25,8 @@ extern float AngleYZ;
 extern float AngleZX;
 extern float eye_direction;
 static Matrix rotateMatrix;
+
+void display(void);
 
 void mouseTurn(Rubik* rubik,GLsizei lx,GLsizei ly,GLsizei nx,GLsizei ny) {
   GLfloat beginX,beginY,beginZ;
@@ -315,13 +318,31 @@ void turnFace(Rubik* rubik,GLsizei face,GLsizei direction,GLsizei animation) {
   }
   if (animation==ANIMATION_TRUE) {
     initRotation(rubik,face,direction,animation);
-    glutIdleFunc(doAnimation);
+    while (rotate(&rubik->rotation)) {
+      /*glutPostRedisplay();*/
+      display();
+      for (int i=0;i<1000;++i);
+    }
+    fixRotation(&rubik->rotation);
+    if (checkRubik(rubik)) {
+      glClearColor(0.5f,0.5f,0.5f,1.0f);
+    } else {
+      glClearColor(0.0f,0.0f,0.0f,0.0f);
+    }
+    glutPostRedisplay();
   }
   else {
     initRotation(rubik,face,direction,animation);
     while (rotate(&rubik->rotation)) {
       glutPostRedisplay();
     }
+    fixRotation(&rubik->rotation);
+    if (checkRubik(rubik)) {
+      glClearColor(0.5f,0.5f,0.5f,1.0f);
+    } else {
+      glClearColor(0.0f,0.0f,0.0f,0.0f);
+    }
+    glutPostRedisplay();
   }
 }
 //检查面颜色是否一致

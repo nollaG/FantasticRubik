@@ -28,10 +28,19 @@ static GLsizei lastLeftClickX,lastLeftClickY;
 static GLsizei lastRightX,lastRightY;
 static GLsizei rightButtonDown;
 
+static char rubikState[20][4];
+static char solveResult[1000];
+static int resultLen=0;
+static int resultPointer=0;
+static char currentState='\0';
+static int currentTimes=0;
+static int stepCounter=0;
+
+
+int solveCube(char state[20][4],char result[1000]);
 void render(int total,GLfloat vertexArray[],GLfloat colorArray[]);
 void init(void);
 void reshape(int w,int h);
-void doAnimation();
 void display(void);
 void specialKeyListener(int key,int x,int y);
 void keyBoardListener(unsigned char key,int x,int y);
@@ -78,21 +87,6 @@ void reshape(int w,int h) {
   glLoadIdentity();
 }
 
-void doAnimation() {
-  if (rotate(&rubik.rotation)) {
-    glutPostRedisplay();
-  } else {
-    fixRotation(&rubik.rotation);
-    if (checkRubik(&rubik)) {
-      glClearColor(0.5f,0.5f,0.5f,1.0f);
-    } else {
-      glClearColor(0.0f,0.0f,0.0f,0.0f);
-    }
-    glutPostRedisplay();
-    glutIdleFunc(NULL);
-  }
-    
-}
 void display(void) {
   int tmp;
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -171,11 +165,75 @@ void mouseMotionListener(int x,int y) {
   glutPostRedisplay();
 }
 
+void solveRubik(Rubik* rubik) {
+  generateState(rubik,rubikState);
+  resultLen=solveCube(rubikState,solveResult);
+  resultPointer=0;
+  currentState='\0';
+  currentTimes=0;
+  printf("%s\n",solveResult);
+  stepCounter=0;
+}
+
+void displaySolution() {
+  if (resultPointer>=resultLen) {
+    printf("TotalSteps=%d\n",stepCounter);
+    return;
+  }
+  stepCounter++;
+  currentState=solveResult[resultPointer];
+  currentTimes=solveResult[resultPointer+1]-'0';
+  resultPointer+=2;
+  while (currentState==solveResult[resultPointer]) {
+    currentTimes+=solveResult[resultPointer+1]-'0';
+    resultPointer+=2;
+  }
+  currentTimes=currentTimes%4;
+  int face=FACE_UNKNOWN;
+  switch (currentState) {
+    case 'U':
+      face=FACE_TOP;
+      break;
+    case 'D':
+      face=FACE_BOTTOM;
+      break;
+    case 'F':
+      face=FACE_FRONT;
+      break;
+    case 'B':
+      face=FACE_BACK;
+      break;
+    case 'L':
+      face=FACE_LEFT;
+      break;
+    case 'R':
+      face=FACE_RIGHT;
+      break;
+    default:break;
+  }
+  if (currentTimes==0 || face==FACE_UNKNOWN)
+    return;
+  if (currentTimes==1)
+    turnFace(&rubik,face,TURN_CW,ANIMATION_TRUE);
+  if (currentTimes==2)
+    for (int i=0;i<2;++i)
+      turnFace(&rubik,face,TURN_CW,ANIMATION_TRUE);
+  if (currentTimes==3)
+    turnFace(&rubik,face,TURN_CCW,ANIMATION_TRUE);
+}
+
+
 void specialKeyListener(int key,int x,int y) {
   switch (key)
   {
     case GLUT_KEY_F2:
       disorderRubik(&rubik);
+      break;
+    case GLUT_KEY_F3:
+      solveRubik(&rubik);
+      break;
+    case GLUT_KEY_F4:
+      displaySolution();
       break;
     case GLUT_KEY_LEFT:
       cameraType-=1;
@@ -208,7 +266,7 @@ int main(int argc,char** argv) {
    glutCreateWindow (argv[0]);
    init();
    glutDisplayFunc(display);
-   /*glutIdleFunc(display);*/
+   glutIdleFunc(display);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keyBoardListener);
    glutMouseFunc(mouseClickListener);

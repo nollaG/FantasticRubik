@@ -2,16 +2,10 @@
 #include <stdio.h>
 #include "GLCube.h"
 #include "GLFace.h"
+#include "GLColor.h"
 #include "global_config.h"
 #include "Rubik.h"
 #include "Operate.h"
-GLColor ColorBlack={0.0,0.0,0.0};
-GLColor ColorWhite={1.0,1.0,1.0};
-GLColor ColorRed={1.0,0.0,0.0};
-GLColor ColorGreen={0.0,1.0,0.0};
-GLColor ColorBlue={0.0,0.0,1.0};
-GLColor ColorYellow={1.0,1.0,0.0};
-GLColor ColorOrange={1.0,0.5,0.0};
 int RubikInitArray(Rubik* rubik,GLfloat vertexArray[],GLfloat colorArray[]) {
   GLsizei index=0;
   for (int i=0;i<27;++i)
@@ -88,3 +82,73 @@ void RubikInit(Rubik* rubik) {
     GLCubeSetFaceColor(&rubik->cubeArray[3*i+2],FACE_RIGHT,&ColorWhite);
 }
 
+void generateState(Rubik* rubik,char state[20][4]) {
+  state[0][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[7],FACE_TOP));
+  state[0][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[7],FACE_FRONT));
+  state[0][2]='\0';
+  state[1][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[5],FACE_TOP));
+  state[1][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[5],FACE_RIGHT));
+  state[1][2]='\0';
+  state[2][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[1],FACE_TOP));
+  state[2][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[1],FACE_BACK));
+  state[2][2]='\0';
+  state[3][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[3],FACE_TOP));
+  state[3][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[3],FACE_LEFT));
+  state[3][2]='\0';
+  state[4][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[25],FACE_BOTTOM));
+  state[4][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[25],FACE_FRONT));
+  state[4][2]='\0';
+  state[5][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[23],FACE_BOTTOM));
+  state[5][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[23],FACE_RIGHT));
+  state[5][2]='\0';
+  state[6][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[19],FACE_BOTTOM));
+  state[6][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[19],FACE_BACK));
+  state[6][2]='\0';
+  state[7][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[21],FACE_BOTTOM));
+  state[7][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[21],FACE_LEFT));
+  state[7][2]='\0';
+  state[8][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[17],FACE_FRONT));
+  state[8][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[17],FACE_RIGHT));
+  state[8][2]='\0';
+  state[9][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[15],FACE_FRONT));
+  state[9][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[15],FACE_LEFT));
+  state[9][2]='\0';
+  state[10][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[11],FACE_BACK));
+  state[10][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[11],FACE_RIGHT));
+  state[10][2]='\0';
+  state[11][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[9],FACE_BACK));
+  state[11][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[9],FACE_LEFT));
+  state[11][2]='\0';
+  state[12][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[8],FACE_TOP));
+  state[12][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[8],FACE_FRONT));
+  state[12][2]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[8],FACE_RIGHT));
+  state[12][3]='\0';
+  state[13][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[2],FACE_TOP));
+  state[13][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[2],FACE_RIGHT));
+  state[13][2]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[2],FACE_BACK));
+  state[13][3]='\0';
+  state[14][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[0],FACE_TOP));
+  state[14][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[0],FACE_BACK));
+  state[14][2]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[0],FACE_LEFT));
+  state[14][3]='\0';
+  state[15][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[6],FACE_TOP));
+  state[15][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[6],FACE_LEFT));
+  state[15][2]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[6],FACE_FRONT));
+  state[15][3]='\0';
+  state[16][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[26],FACE_BOTTOM));
+  state[16][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[26],FACE_RIGHT));
+  state[16][2]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[26],FACE_FRONT));
+  state[16][3]='\0';
+  state[17][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[24],FACE_BOTTOM));
+  state[17][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[24],FACE_FRONT));
+  state[17][2]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[24],FACE_LEFT));
+  state[17][3]='\0';
+  state[18][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[18],FACE_BOTTOM));
+  state[18][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[18],FACE_LEFT));
+  state[18][2]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[18],FACE_BACK));
+  state[18][3]='\0';
+  state[19][0]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[20],FACE_BOTTOM));
+  state[19][1]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[20],FACE_BACK));
+  state[19][2]=convertColorToFaceChar(GLCubeGetFaceColor(rubik->cubeArrayIndex[20],FACE_RIGHT));
+  state[19][3]='\0';
+}

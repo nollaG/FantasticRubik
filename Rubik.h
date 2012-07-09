@@ -13,3 +13,11 @@ typedef struct
 int RubikInitArray(Rubik*,GLfloat [],GLfloat []); //return index
 void RubikInit(Rubik*);
 GLboolean checkRubik(Rubik*);
+void generateState(Rubik*,char state[20][4]);
+extern GLColor ColorBlack;
+extern GLColor ColorWhite;
+extern GLColor ColorRed;
+extern GLColor ColorGreen;
+extern GLColor ColorBlue;
+extern GLColor ColorYellow;
+extern GLColor ColorOrange;
