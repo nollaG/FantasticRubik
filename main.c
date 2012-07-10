@@ -38,6 +38,7 @@ static int stepCounter=0;
 
 
 int solveCube(char state[20][4],char result[1000]);
+void displaySolution(void);
 void render(int total,GLfloat vertexArray[],GLfloat colorArray[]);
 void init(void);
 void reshape(int w,int h);
@@ -64,16 +65,18 @@ void init(void) {
   glCullFace(GL_BACK);
   glEnable(GL_CULL_FACE);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-  /*glPointSize(8);*/
-  /*glLineWidth(5);*/
-  /*glEnable(GL_POINT_SMOOTH);*/
-  /*glEnable(GL_LINE_SMOOTH);*/
-  /*glEnable(GL_POLYGON_SMOOTH);*/
-  /*glHint(GL_POINT_SMOOTH,GL_NICEST);*/
-  /*glHint(GL_LINE_SMOOTH,GL_NICEST);*/
-  /*glHint(GL_POLYGON_SMOOTH,GL_NICEST);*/
-  /*glEnable(GL_BLEND);*/
-  /*glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);*/
+  //---------------------------------------------------
+  glPointSize(8);
+  glLineWidth(5);
+  glEnable(GL_POINT_SMOOTH);
+  glEnable(GL_LINE_SMOOTH);
+  glEnable(GL_POLYGON_SMOOTH);
+  glHint(GL_POINT_SMOOTH,GL_NICEST);
+  glHint(GL_LINE_SMOOTH,GL_NICEST);
+  glHint(GL_POLYGON_SMOOTH,GL_NICEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  //-----------------------------------------------------
   RubikInit(&rubik);
 }
 
@@ -94,9 +97,9 @@ void display(void) {
   glLoadIdentity();
   gluLookAt(EYE_DISTANCE*cos(AngleYZ/180*PI)*sin(AngleZX/180*PI),EYE_DISTANCE*sin(AngleYZ/180*PI),EYE_DISTANCE*cos(AngleYZ/180*PI)*cos(AngleZX/180*PI),0,0,0,0,eye_direction,0);
   tmp=RubikInitArray(&rubik,vertices,colors);
-  glEnable(GL_MULTISAMPLE_ARB);
+  /*glEnable(GL_MULTISAMPLE_ARB);*/
   render(tmp*6,vertices,colors);
-  glDisable(GL_MULTISAMPLE_ARB);
+  /*glDisable(GL_MULTISAMPLE_ARB);*/
   glutSwapBuffers();
 }
 
@@ -171,8 +174,8 @@ void solveRubik(Rubik* rubik) {
   resultPointer=0;
   currentState='\0';
   currentTimes=0;
-  printf("%s\n",solveResult);
   stepCounter=0;
+  printf("Solution Completed!\n");
 }
 
 void displaySolution() {
@@ -180,7 +183,6 @@ void displaySolution() {
     printf("TotalSteps=%d\n",stepCounter);
     return;
   }
-  stepCounter++;
   currentState=solveResult[resultPointer];
   currentTimes=solveResult[resultPointer+1]-'0';
   resultPointer+=2;
@@ -213,14 +215,24 @@ void displaySolution() {
   }
   if (currentTimes==0 || face==FACE_UNKNOWN)
     return;
-  if (currentTimes==1)
+  if (currentTimes==1) {
     turnFace(&rubik,face,TURN_CW,ANIMATION_TRUE);
-  if (currentTimes==2)
+    printf("%c\n",currentState);
+    stepCounter++;
+  }
+  if (currentTimes==2) {
     for (int i=0;i<2;++i)
       turnFace(&rubik,face,TURN_CW,ANIMATION_TRUE);
-  if (currentTimes==3)
+    printf("%c2\n",currentState);
+    stepCounter++;
+  }
+  if (currentTimes==3) {
     turnFace(&rubik,face,TURN_CCW,ANIMATION_TRUE);
+    printf("%c\'\n",currentState);
+    stepCounter++;
+  }
 }
+
 
 
 void specialKeyListener(int key,int x,int y) {

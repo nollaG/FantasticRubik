@@ -35,7 +35,7 @@
 #define GLUT_WHEEL_UP 3
 #define GLUT_WHEEL_DOWN 4
 
-#define WHEEL_SENSITIVITY 0.1
+#define WHEEL_SENSITIVITY 0.5
 
 #define EYE_DISTANCE 25
 
