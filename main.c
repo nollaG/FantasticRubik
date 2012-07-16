@@ -19,6 +19,8 @@ void turnFace(Rubik*,GLsizei,GLsizei,GLsizei);
 int cameraType=0;
 int upOrDown=0;
 
+
+ktesting
 float perspective=45.0f;
 float AngleZX=45.0f;
 float AngleYZ=45.0f;
