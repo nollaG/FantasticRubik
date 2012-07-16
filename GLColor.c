@@ -21,3 +21,21 @@ char convertColorToFaceChar(GLColor* c) {
     return 'B';
   return 'N';
 }
+GLColor* convertFaceCharToColor(char c) {
+  switch (c)
+  {
+    case 'R':
+      return &ColorWhite;
+    case 'F':
+      return &ColorRed;
+    case 'D':
+      return &ColorBlue;
+    case 'U':
+      return &ColorGreen;
+    case 'L':
+      return &ColorYellow;
+    case 'B':
+      return &ColorOrange;
+    default:return NULL;
+  }
+}

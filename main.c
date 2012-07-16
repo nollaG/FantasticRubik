@@ -37,6 +37,10 @@ static int currentTimes=0;
 static int stepCounter=0;
 
 
+
+
+void printState();
+void setState();
 int solveCube(char state[20][4],char result[1000]);
 void displaySolution(void);
 void render(int total,GLfloat vertexArray[],GLfloat colorArray[]);
@@ -45,7 +49,6 @@ void reshape(int w,int h);
 void display(void);
 void specialKeyListener(int key,int x,int y);
 void keyBoardListener(unsigned char key,int x,int y);
-void print(void);
 void disorderRubik(Rubik*);
 void render(int total,GLfloat vertexArray[],GLfloat colorArray[]) {
   glEnableClientState(GL_VERTEX_ARRAY);
@@ -178,6 +181,24 @@ void solveRubik(Rubik* rubik) {
   printf("Solution Completed!\n");
 }
 
+
+//TODO: SPLIT STATE
+void setState() {
+  printf("Please input the State:\n");
+  for (int i=0;i<20;i++)
+    scanf("%s",rubikState[i]);
+  setRubikState(&rubik,rubikState);
+}
+
+
+void printState() {
+  generateState(&rubik,rubikState);
+  for (int i=0;i<20;++i)
+    printf("%s ",rubikState[i]);
+  printf("\n");
+}
+
+
 void displaySolution() {
   if (resultPointer>=resultLen) {
     printf("TotalSteps=%d\n",stepCounter);
@@ -267,8 +288,21 @@ void specialKeyListener(int key,int x,int y) {
 }
 
 void keyBoardListener(unsigned char key,int x,int y) {
-  if (rubik.rotation.rotating)
-    return;
+  switch (key) {
+    case 'p':
+    case 'P':
+      printState();
+      break;
+    case 'S':
+    case 's':
+      setState();
+      break;
+    case 'q':
+    case 'Q':
+      exit(0);
+      break;
+    default:break;
+  }
 }
 int main(int argc,char** argv) {
    glutInit(&argc, argv);

@@ -9,6 +9,7 @@ typedef struct
 } GLColor;
 #endif
 char convertColorToFaceChar(GLColor*);
+GLColor* convertFaceCharToColor(char);
 extern GLColor ColorBlack;
 extern GLColor ColorWhite;
 extern GLColor ColorRed;
