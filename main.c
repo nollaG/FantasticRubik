@@ -39,11 +39,11 @@ static int stepCounter=0;
 
 
 
-void printState();
-void setState();
-int solveCube(char state[20][4],char result[1000]);
-void displaySolution(void);
-void render(int total,GLfloat vertexArray[],GLfloat colorArray[]);
+void printState(); //Print current Rubik State to console
+void setState(); //Scanf from console to set current Rubik
+int solveCube(char state[20][4],char result[1000]); //the Interface to solve the cube
+void displaySolution(void); //display the solution
+void render(int total,GLfloat vertexArray[],GLfloat colorArray[]); //main render function
 void init(void);
 void reshape(int w,int h);
 void display(void);
