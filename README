@@ -1,0 +1,15 @@
+This is a Rubik which you can use mouse to play and solve any
+possible state of it.
+
+Use mouse left button to turn the cube.
+Use mouse right button to turn the camera.
+use wheel to zoom.
+Use F2 to disorder the cube.
+Use F3 to generate the solution.
+Use F4 to display the solution step by step.
+
+The solve algorithm is:
+http://www.jaapsch.net/puzzles/thistle.htm
+The implemention is in solveCube.cpp,From:
+http://tomas.rokicki.com/cubecontest/winners.html
+I use the second one.
